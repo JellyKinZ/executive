@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+   <body>
+   
+      <h3>Complete Scheduled Action - <a href = "{{ url_for('home') }}">Executive</a></h3>
+      <hr/>
+      
+      {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+            {{ message }}
+         </div>
+      {%- endfor %}
+      <br>
+      <form action = "{{ request.path }}" method = "POST">
+         Choose Scheduled Action:<select name="scheduled_action">
+         {% for s in scheduled_actions %}
+           <option value={{s.scheduledaction_id}}>{{s.name}}</option>
+         {% endfor %}
+         </select>
+         <br><br>
+         <input type = "submit" value = "Submit" />
+      </form>
+      
+   </body>
+</html>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang = "en">
-   <head></head>
    <body>
       
       <h3>
@@ -13,7 +12,7 @@
       {%- endfor %}
       
       <h3>Projects (<a href = "{{ url_for('add_project') }}">Add Project</a>)</h3>
-      
+
       <table>
          <thead>
             <tr>
@@ -34,8 +33,8 @@
          </tbody>
       </table>
       
-      <h3>Project Tasks (<a href = "{{ url_for('add_action') }}">Add Project Task</a>)
-      (<a href = "{{ url_for('finish_action') }}">Complete Project Task</a>)</h3>
+      <h3>Tasks (<a href = "{{ url_for('add_action') }}">Add task</a>)
+      (<a href = "{{ url_for('finish_action') }}">Complete task</a>)</h3>
       
       <table>
          <thead>
@@ -63,7 +62,8 @@
          </tbody>
       </table>
       
-      <h3>Scheduled actions (<a href = "{{ url_for('add_scheduled_action') }}">Add scheduled action</a>)</h3>
+      <h3>Scheduled actions (<a href = "{{ url_for('add_scheduled_action') }}">Add scheduled action</a>)
+      (<a href = "{{ url_for('finish_scheduled_action') }}">Complete scheduled action</a>)</h3>
       
       <table>
          <thead>

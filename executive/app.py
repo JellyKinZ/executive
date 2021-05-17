@@ -9,6 +9,7 @@ from executive.actions.decide_f import DecisionMaker
 from executive.actions.models_f import Project, Action, ScheduledAction
 from flask import render_template, request, redirect, url_for, flash
 from datetime import datetime
+from pytz import timezone
 
 @app.route('/')
 def home():            
@@ -103,6 +104,18 @@ def finish_action():
         flash('Action was successfully updated')
         return redirect(url_for('home'))
     return render_template('finish_action.html', projects = projects, project = project, actions = actions)
+
+@app.route('/finish_scheduled_action', methods = ['GET', 'POST'])
+def finish_scheduled_action():
+    if request.method == 'POST':
+        scheduled_action = ScheduledAction.query.filter(ScheduledAction.scheduledaction_id 
+                                                        == request.form['scheduled_action']).first()
+        scheduled_action.lastcompleted = datetime.now(timezone('Europe/Amsterdam'))
+        db.session.merge(scheduled_action)
+        db.session.commit()
+        flash('Scheduled action was successfully updated')
+        return redirect(url_for('home'))
+    return render_template('finish_scheduled_action.html', scheduled_actions = ScheduledAction.query.all())
 
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)
