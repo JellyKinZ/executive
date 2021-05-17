@@ -1,4 +1,4 @@
 *.s3db
 *~
 *.pyc
-*.db
+executive/executive.db
