@@ -13,7 +13,7 @@ class RawSQL(object):
                 else:
                     if query.startswith("delete"):
                         if not "where" in query:
-                            confirm = raw_input("Really delete everything?\nIf so, please write 'yes sir, delete everything.'\n>")
+                            confirm = input("Really delete everything?\nIf so, please write 'yes sir, delete everything.'\n>")
                             if confirm != "yes sir, delete everything.":
                                 raise Exception("aborted")
                             

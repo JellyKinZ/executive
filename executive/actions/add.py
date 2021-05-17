@@ -12,7 +12,7 @@ class AddAction(object):
     def _getoptions(self):
         options = {}
         for option in self.options:
-            options[option] = raw_input("{option}? \n > ".format(**locals())).strip()
+            options[option] = input("{option}? \n > ".format(**locals())).strip()
         if 'project' in options.keys():
             if options['project']:
                 options['project'] = Project[options['project']]
