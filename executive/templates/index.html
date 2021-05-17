@@ -70,11 +70,8 @@
             <tr>
                <th>ID</th>
                <th>Name</th>
-               <th>Minute</th>
-               <th>Hour</th>
-               <th>Day of the month</th>
-               <th>Month</th>
-               <th>Weekday</th>
+               <th>Cron</th>
+               <th>Last completed</th>
             </tr>
          </thead>
          
@@ -83,17 +80,15 @@
                <tr>
                   <td>{{ sa.scheduledaction_id }}</td>
                   <td>{{ sa.name }}</td>
-                  <td>{{ sa.minute }}</td>
-                  <td>{{ sa.hour }}</td>
-                  <td>{{ sa.day_of_month }}</td>
-                  <td>{{ sa.month }}</td>
-                  <td>{{ sa.weekday }}</td>
+                  <td>{{ sa.cron }}</td>
+                  <td>{{ sa.lastcompleted }}</td>
                </tr>
             {% endfor %}
          </tbody>
       </table>
       
-      
+      <h3>Decided task:</h3>
+      <h4>{{ decision }}</h4>
       
    </body>
 </html>

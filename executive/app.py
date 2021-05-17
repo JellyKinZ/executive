@@ -5,16 +5,20 @@ Created on Mon May 17 10:01:18 2021
 """
 
 from executive.app_info import app, db
+from executive.actions.decide_f import DecisionMaker
 from executive.actions.models_f import Project, Action, ScheduledAction
 from flask import render_template, request, redirect, url_for, flash
 from datetime import datetime
 
 @app.route('/')
 def home():            
+    d = DecisionMaker()
+    decision = d.run()
     return render_template('index.html', 
                            projects = Project.query.all(), 
                            actions = Action.query.all(),
-                           scheduled_actions = ScheduledAction.query.all())
+                           scheduled_actions = ScheduledAction.query.all(),
+                           decision = decision)
 
 @app.route('/add_project', methods = ['GET', 'POST'])
 def add_project():
@@ -63,8 +67,10 @@ def add_scheduled_action():
         # Invalidations
         # Same name + same exact cron should not be allowed?
         # Add action to database
-        scheduled_action = ScheduledAction(request.form['name'], request.form['minute'], request.form['hour'],
-                           request.form['day_of_month'], request.form['month'], request.form['weekday'], None)
+        scheduled_action = ScheduledAction(request.form['name'], 
+                                           request.form['minute'] + " " + request.form['hour'] + " " 
+                                           + request.form['day_of_month'] + " " + request.form['month']
+                                           + " " + request.form['weekday'] + " " + request.form['year'], None)
         db.session.add(scheduled_action)
         db.session.commit()
         flash('Scheduled action was successfully added')
