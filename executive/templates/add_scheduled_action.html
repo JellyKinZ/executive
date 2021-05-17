@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+   <body>
+   
+      <h3>Add Scheduled Action - <a href = "{{ url_for('home') }}">Executive</a></h3>
+      <hr/>
+      
+      {%- for category, message in get_flashed_messages(with_categories = true) %}
+         <div class = "alert alert-danger">
+            {{ message }}
+         </div>
+      {%- endfor %}
+      <br>
+      <form action = "{{ request.path }}" method = "post">
+         <label for = "name">Name</label><br>
+         <input type = "text" name = "name" placeholder = "Action Name" /><br><br>
+         <label for = "minute">Minute (0 - 59)</label><br>
+         <input type = "text" name = "minute" value = "*" /><br><br>
+         <<label for = "hour">Hour (0 - 23)</label><br>
+         <input type = "text" name = "hour" value = "*" /><br><br>
+         <label for = "day_of_month">Day of the month (1 - 31)</label><br>
+         <input type = "text" name = "day_of_month" value = "*" /><br><br>
+         <label for = "month">Month (1 - 12)</label><br>
+         <input type = "text" name = "month" value = "*" /><br><br>
+         <label for = "weekday">Day of the week (0 - 7)</label><br>
+         <input type = "text" name = "weekday" value = "*" /><br><br>
+         <input type = "submit" value = "Submit" />
+      </form>
+      
+   </body>
+</html>

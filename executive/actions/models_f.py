@@ -30,12 +30,21 @@ class Action(db.Model):
 class ScheduledAction(db.Model):
     scheduledaction_id = db.Column('id', db.Integer, primary_key = True)
     name = db.Column('name', db.String(100))
-    cron = db.Column('cron', db.String(100))
+    # cron = db.Column('cron', db.String(100))
+    minute = db.Column('minute', db.String(100))
+    hour = db.Column('hour', db.String(100))
+    day_of_month = db.Column('dayofmonth', db.String(100))
+    month = db.Column('month', db.String(100))
+    weekday = db.Column('weekday', db.String(100))
     lastcompleted = db.Column('lastcompleted', db.DateTime, nullable=True)
     
-    def __init__(self, name, cron, lastcompleted):
+    def __init__(self, name, minute, hour, day_of_month, month, weekday, lastcompleted):
        self.name = name
-       self.cron = cron
+       self.minute = minute
+       self.hour = hour
+       self.day_of_month = day_of_month
+       self.month = month
+       self.weekday = weekday
        self.lastcompleted = lastcompleted
    
 if __name__ == '__main__':

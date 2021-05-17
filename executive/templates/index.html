@@ -34,7 +34,35 @@
          </tbody>
       </table>
       
-      <h3>Actions (<a href = "{{ url_for('add_action') }}">Add Action</a>)</h3>
+      <h3>Project Tasks (<a href = "{{ url_for('add_action') }}">Add Project Task</a>)</h3>
+      
+      <table>
+         <thead>
+            <tr>
+               <th>ID</th>
+               <th>Name</th>
+               <th>Deadline</th>
+               <th>Project</th>
+               <th>Completed</th>
+               <th>Context</th>
+            </tr>
+         </thead>
+         
+         <tbody>
+            {% for action in actions %}
+               <tr>
+                  <td>{{ action.action_id }}</td>
+                  <td>{{ action.name }}</td>
+                  <td>{{ action.deadline }}</td>
+                  <td>{{ action.project }}</td>
+                  <td>{{ action.completed }}</td>
+                  <td>{{ action.context }}</td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+      
+      <h3>Scheduled actions (<a href = "{{ url_for('add_scheduled_action') }}">Add scheduled action</a>)</h3>
       
    </body>
 </html>
