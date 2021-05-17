@@ -1,6 +1,7 @@
 """The script of greatness!"""
 
 from executive.actions.models import Action, ScheduledAction, Project
+from executive.app_info import db
 from executive.tools.cron import CronHandler
 from datetime import datetime, date, timedelta
 import pytz
@@ -22,7 +23,7 @@ class DecisionMaker(object):
     def __newprojectaction(self):        
         return self._new(
             "Add a first project using 'ex addproject (name) [parent id]'",
-            date.today())
+            datetime.today())
 
     def __fillprojectaction(self, project):
         lastcompletednotice = ""
@@ -31,7 +32,7 @@ class DecisionMaker(object):
             lastcompletednotice += "\nlast completed action: {lastdone[0].name} at {lastdone[0].deadline}".format(**locals())
         return self._new(
             "Add an action to project {project.id}: {project.name}".format(**locals()) + lastcompletednotice,
-            date.today(),
+            datetime.today(),
             project = project
             )        
 
