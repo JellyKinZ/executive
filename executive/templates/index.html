@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang = "en">
+   <head></head>
+   <body>
+      
+      <h3>
+         <a href = "{{ url_for('home') }}">Executive</a>
+      </h3>
+      
+      <hr/>
+      {%- for message in get_flashed_messages() %}
+         {{ message }}
+      {%- endfor %}
+      
+      <h3>Projects (<a href = "{{ url_for('add_project') }}">Add Project
+         </a>)</h3>
+      
+      <table>
+         <thead>
+            <tr>
+               <th>ID</th>
+               <th>Name</th>
+               <th>Parent</th>
+            </tr>
+         </thead>
+         
+         <tbody>
+            {% for project in projects %}
+               <tr>
+                  <td>{{ project.project_id }}</td>
+                  <td>{{ project.name }}</td>
+                  <td>{{ project.parent }}</td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+      
+   </body>
+</html>
