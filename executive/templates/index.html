@@ -12,8 +12,7 @@
          {{ message }}
       {%- endfor %}
       
-      <h3>Projects (<a href = "{{ url_for('add_project') }}">Add Project
-         </a>)</h3>
+      <h3>Projects (<a href = "{{ url_for('add_project') }}">Add Project</a>)</h3>
       
       <table>
          <thead>
@@ -34,6 +33,8 @@
             {% endfor %}
          </tbody>
       </table>
+      
+      <h3>Actions (<a href = "{{ url_for('add_action') }}">Add Action</a>)</h3>
       
    </body>
 </html>
