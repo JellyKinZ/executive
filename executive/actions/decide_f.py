@@ -3,9 +3,8 @@
 from executive.actions.models_f import Action, ScheduledAction, Project
 from executive.app_info import db
 from executive.tools.cron import CronHandler
-from datetime import datetime, date, timedelta
+from datetime import datetime
 import pytz
-import re
 
 class DecisionMaker(object):
     def run(self):
