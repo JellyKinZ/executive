@@ -27,11 +27,13 @@ class DecisionMaker(object):
 
     def __fillprojectaction(self, project):
         lastcompletednotice = ""
-        lastdone = Action.query.filter(Action.project_id==project.id, Action.completed == True).order_by(Action.deadline.desc())
-        if lastdone:
-            lastcompletednotice += "\nlast completed action: {lastdone[0].name} at {lastdone[0].deadline}".format(**locals())
+        # lastdone = Action.query.filter(Action.project==project.project_id,
+        #                                Action.completed == True).order_by(Action.deadline.desc())
+        # if lastdone:
+        #     print("Lastdone", lastdone, type(lastdone))
+        #     lastcompletednotice += "\nlast completed action: {lastdone[0].name} at {lastdone[0].deadline}".format(**locals())
         return self._new(
-            "Add an action to project {project.id}: {project.name}".format(**locals()) + lastcompletednotice,
+            "Add an action to project {project.project_id}: {project.name}".format(**locals()) + lastcompletednotice,
             datetime.today(),
             project = project
             )        
@@ -57,7 +59,7 @@ class DecisionMaker(object):
                 return action
 
     def _nextaction(self):
-        actions = Action.query.all().where(Action.completed == False)
+        actions = Action.query.filter(Action.completed == False).all()
         nextaction = actions[0] 
         for a in actions:
             if a.deadline < nextaction.deadline:
@@ -68,8 +70,11 @@ class DecisionMaker(object):
         nextaction = Action(
             name = name,
             deadline = deadline,
-            project = project)
-        nextaction.save()
+            completed = False,
+            project = project.project_id,
+            context = "None")
+        db.session.add(nextaction)
+        db.session.commit()
         return nextaction
 
     def _empty_project(self):
@@ -82,18 +87,18 @@ class DecisionMaker(object):
     def _printout(self, action):
         _class = action.__class__
         if _class == ScheduledAction:
-            decision = "[{action.scheduledaction_id}]: {action.timeenabled}: {action.name}".format(**locals())
+            decision = "Scheduled action [{action.scheduledaction_id}] \n Time: {action.timeenabled} \n Name: {action.name}".format(**locals())
         else:
             upcoming = self._upcoming()
             if upcoming:
                 decision = "Next scheduled action: {upcoming[1].name} at {upcoming[0]}".format(**locals())
 
         if _class == Action:
-            if action.project_id:
-                project_str = self._getparents(Project[action.project_id])
+            if action.project and action.project != "None":
+                project_str = self._getparents(Project.query.filter(Project.project_id == action.project).first())
             else:
-                project_str = ""
-            decision = "{project_str} \n {action.id}: {action.deadline}: {action.name}".format(**locals())
+                project_str = "None"
+            decision = "Task ID: {action.action_id} \n Deadline: {action.deadline} \n Name: {action.name} \n Parent: {project_str}".format(**locals())
         print(decision)
         return decision
 
@@ -106,13 +111,14 @@ class DecisionMaker(object):
             if _next:
                 _nexttimes.append((_next, a))
         if _nexttimes:
-            return list(sorted(_nexttimes))[0] #return the first time for action along with the action
-
+            #return the first time for action along with the action
+            return list(sorted(_nexttimes, key = lambda x: x[0]))[0] 
+           
     def _getparents(self, project):
-        if not hasattr(project, 'parent_id') or not project.parent_id:
+        if not project.parent or project.parent == "None":
             return "> " + project.name
         else:
-            parent = Project[project.parent_id]
+            parent = Project[project.parent]
             return self._getparents(parent) + "\n> " + project.name
 
 

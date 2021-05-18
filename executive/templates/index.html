@@ -10,6 +10,11 @@
       {%- for message in get_flashed_messages() %}
          {{ message }}
       {%- endfor %}
+            
+      <h3>Decided task:</h3>
+      {% autoescape false %}
+      <h4>{{ decision }}</h4>
+      {% endautoescape %}
       
       <h3>Projects (<a href = "{{ url_for('add_project') }}">Add Project</a>)</h3>
 
@@ -86,9 +91,6 @@
             {% endfor %}
          </tbody>
       </table>
-      
-      <h3>Decided task:</h3>
-      <h4>{{ decision }}</h4>
       
    </body>
 </html>

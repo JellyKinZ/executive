@@ -16,9 +16,9 @@
          <option value="None"></option>
          {% for p in projects %}
            {% if project == p.project_id %} 
-           <option value={{p.project_id}} selected>{{p.name}}</option>
+           <option value={{p.project_id}} selected>Project {{p.project_id}}: {{p.name}}</option>
            {% else %}
-           <option value={{p.project_id}}>{{p.name}}</option>
+           <option value={{p.project_id}}>Project {{p.project_id}}: {{p.name}}</option>
            {% endif %}
          {% endfor %}
          </select></form>
@@ -26,7 +26,7 @@
          <form action = "{{ request.path }}" method = "POST">
          Choose Action:<select name="action">
          {% for a in actions %}
-           <option value={{a.action_id}}>{{a.name}}</option>
+           <option value={{a.action_id}}>Task {{a.action_id}}: {{a.name}}</option>
          {% endfor %}
          </select>
          <br><br>
