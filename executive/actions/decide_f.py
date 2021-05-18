@@ -97,7 +97,7 @@ class DecisionMaker(object):
                 project_str = self._getparents(Project.query.filter(Project.project_id == action.project).first())
             else:
                 project_str = "None"
-            decision = "Task ID: {action.action_id} \n Deadline: {action.deadline} \n Name: {action.name} \n Parent: {project_str}".format(**locals())
+            decision = "Task ID: {action.action_id} \n Deadline: {action.deadline} \n Name: {action.name} \n Project: {project_str}".format(**locals())
         print(decision)
         return decision
 

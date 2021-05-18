@@ -97,7 +97,8 @@ def finish_action():
             project = int(project)
             actions = Action.query.filter(Action.project == str(project), Action.completed == False).all()
         else:
-            actions = Action.query.filter(Action.project == None, Action.completed == False).all()
+            actions = Action.query.filter((Action.project == "None") 
+                                          | (Action.project == None), Action.completed == False).all()
     if request.method == 'POST':
         action = Action.query.filter(Action.action_id == request.form['action']).first()
         action.completed = True
