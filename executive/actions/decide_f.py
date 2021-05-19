@@ -1,6 +1,6 @@
 """The script of greatness!"""
 
-from executive.actions.models_f import Action, ScheduledAction, Project
+from executive.actions.models_f import Project, Action, ScheduledAction
 from executive.app_info import db
 from executive.tools.cron import CronHandler
 from datetime import datetime
@@ -14,23 +14,26 @@ class DecisionMaker(object):
 
     def _maintenanceaction(self):
         empty_project = self._empty_project()
-        if len(Project.query.all()) == 0:
+        existing_projects = Project.query.all()
+        existing_actions = Action.query.filter(Action.name == "Add a first project").all()
+        if len(existing_projects) == 0:
+            if len(existing_actions) > 0:
+                return None
             return self.__newprojectaction()
         elif empty_project:
             return self.__fillprojectaction(empty_project)
 
     def __newprojectaction(self):        
         return self._new(
-            "Add a first project using 'ex addproject (name) [parent id]'",
+            "Add a first project",
             datetime.today())
 
     def __fillprojectaction(self, project):
         lastcompletednotice = ""
-        # lastdone = Action.query.filter(Action.project==project.project_id,
-        #                                Action.completed == True).order_by(Action.deadline.desc())
-        # if lastdone:
-        #     print("Lastdone", lastdone, type(lastdone))
-        #     lastcompletednotice += "\nlast completed action: {lastdone[0].name} at {lastdone[0].deadline}".format(**locals())
+        lastdone = Action.query.filter(Action.project==project.project_id,
+                                        Action.completed == True).order_by(Action.deadline.desc()).first()
+        if lastdone:
+            lastcompletednotice += "\nLast completed action: {lastdone.name} at ".format(**locals()) + datetime.today().strftime("%Y-%m-%d %H:%M:%S")
         return self._new(
             "Add an action to project {project.project_id}: {project.name}".format(**locals()) + lastcompletednotice,
             datetime.today(),
@@ -66,12 +69,17 @@ class DecisionMaker(object):
         return nextaction
 
     def _new(self, name, deadline, project = None):
-        nextaction = Action(
+        nextaction = (Action(
             name = name,
             deadline = deadline,
             completed = False,
             project = project.project_id,
-            context = "None")
+            context = "None") if project else Action(
+                name = name,
+                deadline = deadline,
+                completed = False,
+                project = None,
+                context = "None"))
         db.session.add(nextaction)
         db.session.commit()
         return nextaction
@@ -117,7 +125,7 @@ class DecisionMaker(object):
         if not project.parent or project.parent == "None":
             return "> " + project.name
         else:
-            parent = Project[project.parent]
+            parent = Project.query.filter(Project.project_id == project.parent).first()
             return self._getparents(parent) + "\n> " + project.name
 
 

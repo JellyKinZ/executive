@@ -14,8 +14,7 @@ from pytz import timezone
 @app.route('/')
 def home():            
     d = DecisionMaker()
-    decision = d.run()
-    decision = decision.replace('\n', '<br/>')
+    decision = d.run().replace('\n', '<br/>')
     return render_template('index.html', 
                            projects = Project.query.all(), 
                            actions = Action.query.all(),
